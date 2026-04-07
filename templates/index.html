@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Audio Transcriber</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #0f0f1a;
+            color: #fff;
+            text-align: center;
+            padding: 50px;
+        }
+        h1 {
+            color: #61dafb;
+        }
+        .upload-box {
+            border: 2px dashed #61dafb;
+            border-radius: 10px;
+            padding: 40px;
+            margin: 20px auto;
+            width: 400px;
+            background: rgba(255,255,255,0.05);
+        }
+        input[type="file"] {
+            display: none;
+        }
+        .custom-file-upload {
+            border: 1px solid #61dafb;
+            display: inline-block;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            background: #1c1c2b;
+            color: #61dafb;
+        }
+        .submit-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            border: none;
+            background: #61dafb;
+            color: #000;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎙️ AI Audio Transcriber</h1>
+    <p>Upload your audio file and get instant transcription.</p>
+
+    <form method="post" enctype="multipart/form-data" class="upload-box">
+        <label class="custom-file-upload">
+            <input type="file" name="file" accept="audio/*">
+            Choose Audio File
+        </label>
+        <br>
+        <button type="submit" class="submit-btn">Upload & Transcribe</button>
+    </form>
+
+    {% if transcription %}
+        <div class="result">
+            <h2>📝 Transcription Result:</h2>
+            <p>{{ transcription }}</p>
+        </div>
+    {% endif %}
+</body>
+</html>
