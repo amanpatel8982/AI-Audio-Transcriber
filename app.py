@@ -43,13 +43,39 @@ def transcribe():
         filepath = os.path.join(app.config["UPLOAD_FOLDER"], file.filename)
         file.save(filepath)
         
-        print(f"Processing file: {file.filename}")
+        language = request.form.get("language", "en").lower()
+        language_map = {
+            "auto": None,
+            "en": "english",
+            "hi": "hindi",
+            "ur": "urdu",
+            "fr": "french",
+            "es": "spanish",
+            "de": "german",
+            "zh": "chinese",
+            "ja": "japanese",
+            "ru": "russian",
+            "ar": "arabic",
+            "pt": "portuguese",
+            "tr": "turkish",
+            "ko": "korean",
+            "it": "italian",
+            "sv": "swedish",
+            "uk": "ukrainian"
+        }
+        mapped_language = language_map.get(language, None)
+        if language not in language_map:
+            print(f"Unsupported language code {language}, falling back to English")
+            mapped_language = "english"
+        elif mapped_language is None:
+            print("Auto-detect selected; letting Whisper detect language automatically")
+
+        print(f"Processing file: {file.filename} (language={mapped_language or 'auto'})")
         
-        # 👇 Language parameter frontend se aayega
-        language = request.form.get("language", "en")  # default English
-        
-        # 👇 Transcribe using Whisper with language
-        result = model.transcribe(filepath, language=language)
+        if mapped_language:
+            result = model.transcribe(filepath, language=mapped_language, task="transcribe")
+        else:
+            result = model.transcribe(filepath, task="transcribe")
         transcription_text = result["text"]
         
         # Clean up uploaded file
